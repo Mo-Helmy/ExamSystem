@@ -501,9 +501,32 @@ namespace ExamSystem.Infrastructure.Data
                 await dbContext.Questions.AddRangeAsync(questionsJavaScript);
 
                 await dbContext.SaveChangesAsync();
-            } 
+            }
             #endregion
 
+            #region Certificates
+            if (!dbContext.Certificates.Any())
+            {
+                var certificates = new List<Certificate>()
+                {
+                    new Certificate {CertificateName = "Programing Language Certificate", TestDurationInMinutes = 45, PassScore = 0.7, CertificateTopis = new List<CertificateTopic> ()
+                    {
+                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 5, TopicPercentage = 0.6 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 5, TopicPercentage = 0.1 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 5, TopicPercentage = 0.1 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 5, TopicPercentage = 0.1 },
+                    } },
+                    new Certificate {CertificateName = "ٌٌReact.js Developer", TestDurationInMinutes = 45, PassScore = 0.7, CertificateTopis = new List<CertificateTopic> ()
+                    {
+                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 10, TopicPercentage = 0.5 },
+                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 5, TopicPercentage = 0.25 },
+                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 5, TopicPercentage = 0.25 },
+                    } },
+                };
+                await dbContext.Certificates.AddRangeAsync(certificates);
+                await dbContext.SaveChangesAsync();
+            }
+            #endregion
         }
     }
 }

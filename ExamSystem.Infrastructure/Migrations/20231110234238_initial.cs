@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ExamSystem.Infrastructure.Data.Migrations
+namespace ExamSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration
@@ -187,8 +187,8 @@ namespace ExamSystem.Infrastructure.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CertificateName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TestTime = table.Column<int>(type: "int", nullable: false),
-                    PassScore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TestDurationInMinutes = table.Column<int>(type: "int", nullable: false),
+                    PassScore = table.Column<double>(type: "float", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -271,7 +271,7 @@ namespace ExamSystem.Infrastructure.Data.Migrations
                     CertificateId = table.Column<int>(type: "int", nullable: false),
                     TopicId = table.Column<int>(type: "int", nullable: false),
                     QuestionCount = table.Column<int>(type: "int", nullable: false),
-                    TopicPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TopicPercentage = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),

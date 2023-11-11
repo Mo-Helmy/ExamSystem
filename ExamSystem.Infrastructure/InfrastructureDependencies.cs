@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ExamSystem.Infrastructure
 {
-    public static class ApplicationDependencies
+    public static class InfrastructureDependencies
     {
-        public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection services)
         {
             // Not required as unit of work will generate new object of repository type when needed without using dependency injection.
             //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

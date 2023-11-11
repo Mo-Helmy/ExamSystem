@@ -27,6 +27,8 @@ namespace ExamSystem.Infrastructure.Data.Config
                 .WithMany()
                 .HasForeignKey(x => x.ExamId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasQueryFilter(x => x.IsDeleted == false);
         }
     }
 

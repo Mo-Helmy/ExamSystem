@@ -1,5 +1,7 @@
 
 using ExamSystem.API.Extensions;
+using ExamSystem.Application;
+using ExamSystem.Application.Services;
 using ExamSystem.Infrastructure;
 using ExamSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,9 @@ namespace ExamSystem.API
             });
 
 
-            builder.Services.AddApplicationDependencies();
+            builder.Services.AddInfrastructureDependencies().AddApplicationDependencies();
+
+            builder.Services.AddScoped<IQuestionService, QuestionService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

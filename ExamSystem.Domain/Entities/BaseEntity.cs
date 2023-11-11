@@ -50,9 +50,10 @@ namespace ExamSystem.Domain.Entities
     public class Certificate : BaseEntity
     {
         public string CertificateName { get; set; } = null!;
-        public int TestTime { get; set; }
-        public decimal PassScore { get; set; }
+        public int TestDurationInMinutes { get; set; }
+        public double PassScore { get; set; }
 
+        public ICollection<CertificateTopic> CertificateTopis { get; set;}
     }
 
     public class CertificateTopic : BaseEntity
@@ -64,7 +65,7 @@ namespace ExamSystem.Domain.Entities
         public Topic Topic { get; set; }
 
         public int QuestionCount { get; set; }
-        public decimal TopicPercentage { get; set; }
+        public double TopicPercentage { get; set; }
     }
 
     public class Exam : BaseEntity
