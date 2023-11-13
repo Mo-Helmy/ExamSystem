@@ -22,6 +22,8 @@ namespace ExamSystem.Infrastructure.Data
         public DbSet<Exam> Exams { get; set; }
         public DbSet<ExamQuestion> ExamsQuestions { get; set; }
 
+        public DbSet<AppUser> Users { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 

@@ -1,4 +1,6 @@
 ﻿using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,56 @@ namespace ExamSystem.Infrastructure.Data
 {
     public static class AppContextSeed
     {
-        public static async Task AddSeedsAsync(AppDbContext dbContext)
+        public static async Task AddSeedsAsync(AppDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
+            #region Rols
+            if (!roleManager.Roles.Any())
+            {
+                //await _roleManager.CreateAsync(new IdentityRole("USER"));
+                await roleManager.CreateAsync(new IdentityRole("USER"));
+                await roleManager.CreateAsync(new IdentityRole("ADMIN"));
+                await roleManager.CreateAsync(new IdentityRole("SUPERADMIN"));
+
+                //await dbContext.SaveChangesAsync();
+            } 
+            #endregion
+
+            #region Users
+            if (!dbContext.Users.Any())
+            {
+                var users = new List<AppUser>()
+                {
+                    
+                    new AppUser() {Id = "user1", FirstName = "foo", LastName = "roo",Email="user1@example.com", UserName = "username1", CreatedAt = DateTime.Now, IsDeleted = false},
+                    new AppUser() {Id = "user2", FirstName = "foo", LastName = "too",Email="user2@example.com", UserName = "username2", CreatedAt = DateTime.Now, IsDeleted = false},
+                    new AppUser() {Id = "admin1",FirstName = "foo", LastName = "yoo", Email="admin1@example.com", UserName = "admin1",CreatedAt = DateTime.Now, IsDeleted = false},
+                    new AppUser() {Id = "admin2",FirstName = "foo", LastName = "hoo", Email="admin2@example.com", UserName = "admin2", CreatedAt = DateTime.Now, IsDeleted = false},
+                    new AppUser() {Id = "admin3",FirstName = "foo", LastName = "goo", Email="admin3@example.com", UserName = "admin3", CreatedAt = DateTime.Now, IsDeleted = false},
+                    new AppUser() {Id = "superadmin1",FirstName = "foo", LastName = "loo", Email="superadmin1@example.com", UserName = "superadmin1", CreatedAt = DateTime.Now, IsDeleted = false},
+                };
+
+
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "string123");
+
+                    if (user.Id.Contains("user"))
+                    {
+                        await userManager.AddToRoleAsync(user, "USER");
+                    }
+                    else if (user.Id.Contains("superadmin"))
+                    {
+                        await userManager.AddToRoleAsync(user, "SUPERADMIN");
+                    }
+                    else if (user.Id.Contains("admin"))
+                    {
+                        await userManager.AddToRoleAsync(user, "ADMIN");
+                    }
+                }
+
+            } 
+            #endregion
+
             #region Categories
             if (!dbContext.Categories.Any())
             {
@@ -509,18 +559,18 @@ namespace ExamSystem.Infrastructure.Data
             {
                 var certificates = new List<Certificate>()
                 {
-                    new Certificate {CertificateName = "Programing Language Certificate", TestDurationInMinutes = 45, PassScore = 0.7, CertificateTopis = new List<CertificateTopic> ()
+                    new Certificate {CertificateName = "Programing Language Certificate", TestDurationInMinutes = 45, PassScore = 0.7m, CertificateTopis = new List<CertificateTopic> ()
                     {
-                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 5, TopicPercentage = 0.6 },
-                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 5, TopicPercentage = 0.1 },
-                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 5, TopicPercentage = 0.1 },
-                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 5, TopicPercentage = 0.1 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 5, TopicPercentage = 0.6m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 5, TopicPercentage = 0.1m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 5, TopicPercentage = 0.1m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 5, TopicPercentage = 0.1m },
                     } },
-                    new Certificate {CertificateName = "ٌٌReact.js Developer", TestDurationInMinutes = 45, PassScore = 0.7, CertificateTopis = new List<CertificateTopic> ()
+                    new Certificate {CertificateName = "ٌٌReact.js Developer", TestDurationInMinutes = 45, PassScore = 0.7m, CertificateTopis = new List<CertificateTopic> ()
                     {
-                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 10, TopicPercentage = 0.5 },
-                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 5, TopicPercentage = 0.25 },
-                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 5, TopicPercentage = 0.25 },
+                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 10, TopicPercentage = 0.5m },
+                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 5, TopicPercentage = 0.25m },
+                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 5, TopicPercentage = 0.25m },
                     } },
                 };
                 await dbContext.Certificates.AddRangeAsync(certificates);

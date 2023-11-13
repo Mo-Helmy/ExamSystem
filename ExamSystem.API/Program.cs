@@ -1,10 +1,15 @@
 
 using ExamSystem.API.Extensions;
 using ExamSystem.Application;
+using ExamSystem.Application.Errors;
+using ExamSystem.Application.Middlewares;
 using ExamSystem.Application.Services;
 using ExamSystem.Infrastructure;
 using ExamSystem.Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
+using System.Reflection;
 
 namespace ExamSystem.API
 {
@@ -23,28 +28,41 @@ namespace ExamSystem.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
             });
 
+            builder.Services.AddIdentityServices(builder.Configuration);
 
-            builder.Services.AddInfrastructureDependencies().AddApplicationDependencies();
+            builder.Services
+                .AddApplicationDependencies()
+                .AddInfrastructureDependencies();
 
-            builder.Services.AddScoped<IQuestionService, QuestionService>();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (actionContext) =>
+                {
+                    var errors = actionContext.ModelState.Where(x => x.Value?.Errors.Count > 0)
+                                            .SelectMany(x => x.Value.Errors)
+                                            .Select(x => x.ErrorMessage)
+                                            .ToList();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+                    var validationErrorResponse = new ApiValidationErrorResponse() { Errors = errors };
+
+                    return new BadRequestObjectResult(validationErrorResponse);
+                };
+            });
+
+
+            builder.Services.AddSwaggerServices();
 
             var app = builder.Build();
 
             await app.UpdateDatabase();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwaggerMiddlewares();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

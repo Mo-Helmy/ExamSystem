@@ -64,6 +64,7 @@ namespace ExamSystem.Infrastructure.Repositories
         public void Update(T entity)
         {
             _dbContext.Set<T>().Update(entity);
+            //_dbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(T entity)

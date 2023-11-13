@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ExamSystem.Application.Dtos.QuestionDtos
 {
-    public class AnswerDto
+    public class DeleteQuestionDto
     {
-        public string AnswerBody { get; set; }
+        public int Id { get; set; }
     }
 }

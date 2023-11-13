@@ -13,8 +13,8 @@ namespace ExamSystem.API.Extensions
 
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
             var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
 
@@ -22,7 +22,7 @@ namespace ExamSystem.API.Extensions
             {
                 await dbContext.Database.MigrateAsync();
 
-                await AppContextSeed.AddSeedsAsync(dbContext);
+                await AppContextSeed.AddSeedsAsync(dbContext, roleManager, userManager);
             }
             catch (Exception ex)
             {

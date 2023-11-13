@@ -1,5 +1,4 @@
-﻿
-namespace ExamSystem.API.Responses
+﻿namespace ExamSystem.Application.Responses
 {
     public class Pagination<T>
     {

@@ -115,8 +115,8 @@ namespace ExamSystem.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<double>("PassScore")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PassScore")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TestDurationInMinutes")
                         .HasColumnType("int");
@@ -157,8 +157,8 @@ namespace ExamSystem.Infrastructure.Migrations
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
 
-                    b.Property<double>("TopicPercentage")
-                        .HasColumnType("float");
+                    b.Property<decimal>("TopicPercentage")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -167,7 +167,8 @@ namespace ExamSystem.Infrastructure.Migrations
 
                     b.HasIndex("CertificateId");
 
-                    b.HasIndex("TopicId");
+                    b.HasIndex("TopicId", "CertificateId")
+                        .IsUnique();
 
                     b.ToTable("CertificateTopics");
                 });

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ExamSystem.Application.Dtos.AnswersDtos;
 using ExamSystem.Application.Dtos.QuestionDtos;
 using ExamSystem.Domain.Entities;
 using System;
@@ -13,8 +14,17 @@ namespace ExamSystem.Application.MappingProfiles
     {
         public QuestionMappingProfile()
         {
-            CreateMap<QuestionDto, Question>().ReverseMap();
-            CreateMap<AnswerDto, Answer>().ReverseMap();
+            CreateMap<QuestionResponseDto, Question>().ReverseMap();
+            CreateMap<AnswerResponseDto, Answer>().ReverseMap();
+
+            CreateMap<AddQuestionDto, Question>();
+            CreateMap<AddAnswerDto, Answer>();
+
+            CreateMap<UpdateQuestionDto, Question>();
+            CreateMap<UpdateAnswerDto, Answer>();
+
+            CreateMap<UpdateQuestionDto, QuestionResponseDto>().ReverseMap();
+            CreateMap<UpdateAnswerDto, QuestionResponseDto>().ReverseMap();
         }
     }
 }

@@ -26,6 +26,8 @@ namespace ExamSystem.Domain.Entities
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public ICollection<Certificate> Certificates { get; set; }
     }
 
     public class Question : BaseEntity
@@ -51,9 +53,11 @@ namespace ExamSystem.Domain.Entities
     {
         public string CertificateName { get; set; } = null!;
         public int TestDurationInMinutes { get; set; }
-        public double PassScore { get; set; }
+        public decimal PassScore { get; set; }
 
         public ICollection<CertificateTopic> CertificateTopis { get; set;}
+
+        public ICollection<Topic> Topics { get; set;}
     }
 
     public class CertificateTopic : BaseEntity
@@ -65,7 +69,7 @@ namespace ExamSystem.Domain.Entities
         public Topic Topic { get; set; }
 
         public int QuestionCount { get; set; }
-        public double TopicPercentage { get; set; }
+        public decimal TopicPercentage { get; set; }
     }
 
     public class Exam : BaseEntity

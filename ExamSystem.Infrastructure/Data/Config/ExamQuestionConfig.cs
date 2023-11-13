@@ -36,10 +36,57 @@ namespace ExamSystem.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Topic> builder)
         {
+            builder.HasQueryFilter(x => x.IsDeleted == false);
+
             builder.HasOne(x => x.Category)
                 .WithMany()
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.Certificates)
+                .WithMany(x => x.Topics)
+                .UsingEntity<CertificateTopic>();
+        }
+    }
+
+
+    internal class CertificateTopicConfig : IEntityTypeConfiguration<CertificateTopic>
+    {
+        public void Configure(EntityTypeBuilder<CertificateTopic> builder)
+        {
+            //builder.HasKey(x => new {x.CertificateId, x.TopicId});
+
+            builder.HasQueryFilter(x => x.IsDeleted == false);
+
+            builder.HasIndex(x => new { x.TopicId, x.CertificateId })
+                .IsUnique();
+        }
+    }
+
+
+    internal class CertificateConfig : IEntityTypeConfiguration<Certificate>
+    {
+        public void Configure(EntityTypeBuilder<Certificate> builder)
+        {
+            builder.HasQueryFilter(x => x.IsDeleted == false);
+        }
+    }
+
+    internal class QuestionConfig : IEntityTypeConfiguration<Question>
+    {
+        public void Configure(EntityTypeBuilder<Question> builder)
+        {
+            builder.HasQueryFilter(x => x.IsDeleted == false);
+
+        }
+    }
+
+    internal class AnswerConfig : IEntityTypeConfiguration<Answer>
+    {
+        public void Configure(EntityTypeBuilder<Answer> builder)
+        {
+            builder.HasQueryFilter(x => x.IsDeleted == false);
+
         }
     }
 }

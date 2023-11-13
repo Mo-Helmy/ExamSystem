@@ -40,5 +40,11 @@ namespace ExamSystem.Application.Specifications.Questions
                 }
             }
         }
+
+        public QuestionSpecification(int questionId) : base(x => x.Id == questionId)
+        {
+            Includes.Add(x => x.Answers);
+        }
+        
     }
 }
