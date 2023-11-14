@@ -13,7 +13,7 @@ namespace ExamSystem.Infrastructure.Specifications
             if (spec.Criteria is not null)
                 query = query.Where(spec.Criteria);
 
-            if (spec.CriteriaList.Any())
+            if (spec.CriteriaList.Any()) //.where(criteriaList[1]).where(criteriaList[2])...
                 query = spec.CriteriaList.Aggregate(query, (currentQuery, criteriaExpression) => currentQuery.Where(criteriaExpression));
 
             if (spec.OrderBy is not null)

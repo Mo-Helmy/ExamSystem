@@ -1,6 +1,7 @@
 ﻿using ExamSystem.Application.Dtos.QuestionDtos;
 using ExamSystem.Application.Helper;
 using ExamSystem.Application.Specifications.Questions;
+using ExamSystem.Application.Specifications.TopicSpec;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Infrastructure.Specifications;
 using ExamSystem.Infrastructure.UnitOfWorks.Contract;
@@ -49,6 +50,8 @@ namespace ExamSystem.Application.Services
             question.CreatedAt = DateTime.Now;
 
             foreach(var answer in question.Answers) answer.CreatedAt = DateTime.Now;
+
+            #region Done in Fluent Validation
             // Done in Fluent Validation
             //var topic = await unitOfWork.Repository<Topic>().GetByIdAsync(question.TopicId) 
             //            ?? throw new ValidationException("Topic Not Found!");
@@ -57,7 +60,8 @@ namespace ExamSystem.Application.Services
             //var trueAnswerCount = question.Answers.Count(x => x.IsRight == true);
             //if(trueAnswerCount != 1) throw new ValidationException("True answers Should be only one!");
 
-            //if (question.Answers.Count == 0 || question.Answers.Count > 5) throw new ValidationException("Answers Count Should be in range 1-5");
+            //if (question.Answers.Count == 0 || question.Answers.Count > 5) throw new ValidationException("Answers Count Should be in range 1-5"); 
+            #endregion
 
             await unitOfWork.Repository<Question>().AddAsync(question);
 
@@ -107,6 +111,16 @@ namespace ExamSystem.Application.Services
             await unitOfWork.CompleteAsync();
 
             return existingQuestion;
+        }
+
+        public async Task<IReadOnlyList<Question>> GetExamQuestions(int examId)
+        {
+            var questionIds = (await unitOfWork.Repository<ExamQuestion>()
+                .GetAllWithSpecAsync(new BaseSpecification<ExamQuestion>(x => x.ExamId == examId))).Select(x => x.QuestionId).ToList();
+
+            var examQuestionsSpec = new ExamQuestionSpecification(questionIds);
+
+            return await unitOfWork.Repository<Question>().GetAllWithSpecAsync(examQuestionsSpec);
         }
 
     }

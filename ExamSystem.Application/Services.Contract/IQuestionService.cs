@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.Dtos.QuestionDtos;
 using ExamSystem.Application.Specifications.Questions;
+using ExamSystem.Application.Specifications.TopicSpec;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Infrastructure.UnitOfWorks.Contract;
 using System;
@@ -23,5 +24,7 @@ namespace ExamSystem.Application.Services
         Task<Question> UpdateAsync(UpdateQuestionDto updateQuestionDto);
 
         Task DeleteAsync(int questionId);
+
+        Task<IReadOnlyList<Question>> GetExamQuestions(int examId);
     }
 }

@@ -173,6 +173,80 @@ namespace ExamSystem.Infrastructure.Data
                     },
                 };
 
+                var questionsCPlus = new List<Question>()
+                {
+                    new Question {QuestionBody = "C++ Question no 1", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "C++ Question no 1 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "C++ Question no 1 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "C++ Question no 1 right answer", IsRight = true },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 2", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () { AnswerBody = "Question no 3 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 2 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 2 right answer", IsRight = true },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 3", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 3 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 3 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 3 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 4", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 4 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 4 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 4 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 5", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 5 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 5 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 5 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 6", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 6 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 6 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 6 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 7", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 7 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 7 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 7 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 8", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 8 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 8 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 8 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C++ Question no 9", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "Question no 9 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "Question no 9 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "Question no 9 wrong answer", IsRight = false },
+                        },
+                    },
+                    new Question { QuestionBody = "C# C++ Question no 10", CreatedAt = DateTime.Now, TopicId = 4, Answers = new List<Answer>()
+                        {
+                            new Answer () {AnswerBody = "C++ Question no 10 wrong answer", IsRight = false },
+                            new Answer () {AnswerBody = "C++ Question no 10 right answer", IsRight = true },
+                            new Answer () {AnswerBody = "C++ Question no 10 wrong answer", IsRight = false },
+                        },
+                    },
+                };
+
                 var questionsJava = new List<Question>()
                 {
                     new Question {QuestionBody = "Java Question no 1", CreatedAt = DateTime.Now, TopicId = 5, Answers = new List<Answer>()
@@ -544,10 +618,18 @@ namespace ExamSystem.Infrastructure.Data
                 };
 
                 await dbContext.Questions.AddRangeAsync(questionsC);
+                await dbContext.Questions.AddRangeAsync(questionsC);
+                await dbContext.Questions.AddRangeAsync(questionsCPlus);
+                await dbContext.Questions.AddRangeAsync(questionsCPlus);
+                await dbContext.Questions.AddRangeAsync(questionsJava);
                 await dbContext.Questions.AddRangeAsync(questionsJava);
                 await dbContext.Questions.AddRangeAsync(questionsPython);
+                await dbContext.Questions.AddRangeAsync(questionsPython);
+                await dbContext.Questions.AddRangeAsync(questionsReact);
                 await dbContext.Questions.AddRangeAsync(questionsReact);
                 await dbContext.Questions.AddRangeAsync(questionsNext);
+                await dbContext.Questions.AddRangeAsync(questionsNext);
+                await dbContext.Questions.AddRangeAsync(questionsJavaScript);
                 await dbContext.Questions.AddRangeAsync(questionsJavaScript);
 
                 await dbContext.SaveChangesAsync();
@@ -561,16 +643,16 @@ namespace ExamSystem.Infrastructure.Data
                 {
                     new Certificate {CertificateName = "Programing Language Certificate", TestDurationInMinutes = 45, PassScore = 0.7m, CertificateTopis = new List<CertificateTopic> ()
                     {
-                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 5, TopicPercentage = 0.6m },
-                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 5, TopicPercentage = 0.1m },
-                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 5, TopicPercentage = 0.1m },
-                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 5, TopicPercentage = 0.1m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 3, TopicPercentage = 0.4m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 3, TopicPercentage = 0.2m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 3, TopicPercentage = 0.2m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 3, TopicPercentage = 0.2m },
                     } },
                     new Certificate {CertificateName = "ٌٌReact.js Developer", TestDurationInMinutes = 45, PassScore = 0.7m, CertificateTopis = new List<CertificateTopic> ()
                     {
-                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 10, TopicPercentage = 0.5m },
-                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 5, TopicPercentage = 0.25m },
-                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 5, TopicPercentage = 0.25m },
+                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 6, TopicPercentage = 0.5m },
+                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 2, TopicPercentage = 0.25m },
+                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 2, TopicPercentage = 0.25m },
                     } },
                 };
                 await dbContext.Certificates.AddRangeAsync(certificates);

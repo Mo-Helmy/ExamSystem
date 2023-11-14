@@ -25,6 +25,8 @@ namespace ExamSystem.Application
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<ICertificateTopicService, CertificateTopicService>();
+            services.AddScoped<IExamService, ExamService>();
+            services.AddScoped<IExamQuestionService, ExamQuestionService>();
 
             services.AddScoped<IAuthService, AuthService>();
 

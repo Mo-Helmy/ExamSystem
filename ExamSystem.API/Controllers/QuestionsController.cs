@@ -4,6 +4,7 @@ using ExamSystem.Application.Errors;
 using ExamSystem.Application.Responses;
 using ExamSystem.Application.Services;
 using ExamSystem.Application.Specifications.Questions;
+using ExamSystem.Application.Specifications.TopicSpec;
 using ExamSystem.Domain.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -91,6 +92,7 @@ namespace ExamSystem.API.Controllers
 
             return NoContent();
         }
+
 
     }
 }
