@@ -25,6 +25,6 @@ namespace ExamSystem.Application.Services
 
         Task DeleteAsync(int questionId);
 
-        Task<IReadOnlyList<Question>> GetExamQuestions(int examId);
+        //Task<IReadOnlyList<Question>> GetExamQuestions(int examId);
     }
 }

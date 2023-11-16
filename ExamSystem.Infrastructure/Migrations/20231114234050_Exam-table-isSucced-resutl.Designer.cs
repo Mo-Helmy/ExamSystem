@@ -4,6 +4,7 @@ using ExamSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114234050_Exam-table-isSucced-resutl")]
+    partial class ExamtableisSuccedresutl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,24 +227,6 @@ namespace ExamSystem.Infrastructure.Migrations
                     b.ToTable("Exams");
                 });
 
-            modelBuilder.Entity("ExamSystem.Domain.Entities.ExamOverView", b =>
-                {
-                    b.Property<string>("AnswerBody")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsRight")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("QuestionBody")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.ToTable("ExamOverViews");
-                });
-
             modelBuilder.Entity("ExamSystem.Domain.Entities.ExamQuestion", b =>
                 {
                     b.Property<int>("Id")
@@ -273,59 +258,15 @@ namespace ExamSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnswerId");
+                    b.HasIndex("AnswerId")
+                        .IsUnique()
+                        .HasFilter("[AnswerId] IS NOT NULL");
 
                     b.HasIndex("ExamId");
 
                     b.HasIndex("QuestionId");
 
                     b.ToTable("ExamsQuestions");
-                });
-
-            modelBuilder.Entity("ExamSystem.Domain.Entities.ExamQuestionWithAnswerStoredProcedure", b =>
-                {
-                    b.Property<string>("AnswerBody")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionBody")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.ToTable("ExamQuestionWithAnswerStoredProcedures");
-                });
-
-            modelBuilder.Entity("ExamSystem.Domain.Entities.ExamQuestionWithAnswerView", b =>
-                {
-                    b.Property<string>("AnswerBody")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionBody")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.ToTable((string)null);
-
-                    b.ToView("QuestionsWithAnswersByExamId", (string)null);
                 });
 
             modelBuilder.Entity("ExamSystem.Domain.Entities.Identity.AppUser", b =>

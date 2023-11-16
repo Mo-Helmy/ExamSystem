@@ -83,6 +83,9 @@ namespace ExamSystem.Domain.Entities
         public DateTime ExamStartTime { get; set; }
         public DateTime ExamEndTime { get; set; }
         public DateTime? ExamCompletedTime { get; set; }
+
+        public bool? IsPassed { get; set; }
+        public decimal? ExamResult { get; set; }
     }
 
     public class ExamQuestion : BaseEntity

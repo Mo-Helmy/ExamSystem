@@ -22,34 +22,39 @@ namespace ExamSystem.Infrastructure.Data
         public DbSet<Exam> Exams { get; set; }
         public DbSet<ExamQuestion> ExamsQuestions { get; set; }
 
+
         public DbSet<AppUser> Users { get; set; }
+
+
+        //database stored procedure
+        public DbSet<ExamQuestionWithAnswerStoredProcedure> ExamQuestionWithAnswerStoredProcedures { get; set; }
+        public DbSet<ExamOverView> ExamOverViews { get; set; }
+        
+        // database View
+        public DbSet<ExamQuestionWithAnswerView> ExamQuestionWithAnswerViews { get; set; }
+
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<ExamQuestion>(builder =>
-            //{
-            //    builder.HasOne(x => x.Question)
-            //        .WithMany()
-            //        .HasForeignKey(x => x.QuestionId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-
-            //    builder.HasOne(x => x.Answer)
-            //        .WithMany()
-            //        .HasForeignKey(x => x.AnswerId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-
-            //    builder.HasOne(x => x.Exam)
-            //        .WithMany()
-            //        .HasForeignKey(x => x.ExamId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-            //});
-
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            //builder.Ignore<ExamQuestionWithAnswerStoredProcedure>();
+            //builder.Ignore<ExamOverView>();
+
             base.OnModelCreating(builder);
+        }
+
+
+
+        [DbFunction("GetTotalSuccessPercentage", Schema = "dbo")]
+        public static int GetTotalSuccessPercentage(int examId)
+        {
+            // This doesn't need an implementation; EF core uses the function mapping
+            throw new NotImplementedException();
         }
     }
 }

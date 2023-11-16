@@ -30,6 +30,8 @@ namespace ExamSystem.Application
 
             services.AddScoped<IAuthService, AuthService>();
 
+            services.AddScoped<IMailService, MailService>();
+
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

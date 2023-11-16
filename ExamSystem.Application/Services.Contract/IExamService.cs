@@ -1,5 +1,4 @@
-﻿using ExamSystem.Application.Specifications.CertificateSpec;
-using ExamSystem.Domain.Entities;
+﻿using ExamSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,12 @@ namespace ExamSystem.Application.Services.Contract
 {
     public interface IExamService : IGenericService<Exam>
     {
-        Task<IReadOnlyList<Question>> CreateExamAsync(string userId, int certificateId);
+        Task<IReadOnlyList<ExamOverView>> GetExamOverviewAsync(string userId, int examId);
+
+        Task<Exam?> GetCurrentExamDetailsAsync(string userId);
+
+        Task<IReadOnlyList<Exam>> GetAllExamDetailsForUserAsync(string userId);
+
+        Task<Exam> UpdateCompleteExamAsync(string userId);
     }
 }

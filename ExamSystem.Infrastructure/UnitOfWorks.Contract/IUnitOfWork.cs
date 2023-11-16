@@ -13,5 +13,7 @@ namespace ExamSystem.Infrastructure.UnitOfWorks.Contract
         IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
 
         Task<int> CompleteAsync();
+
+        IExamRepository ExamRepository { get; }
     }
 }

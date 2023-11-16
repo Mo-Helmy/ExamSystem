@@ -9,7 +9,7 @@ namespace ExamSystem.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        private readonly AppDbContext _dbContext;
+        protected readonly AppDbContext _dbContext;
 
         public GenericRepository(AppDbContext dbContext)
         {

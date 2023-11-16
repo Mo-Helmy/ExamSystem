@@ -16,10 +16,15 @@ namespace ExamSystem.Infrastructure.UnitOfWorks
     {
         private readonly AppDbContext dbContext;
         private readonly Hashtable _repositories;
+        
+        public IExamRepository ExamRepository {  get; private set; }
+        
         public UnitOfWork(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
             _repositories = new Hashtable();
+            
+            this.ExamRepository = new ExamRepository(dbContext);
         }
 
         public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity

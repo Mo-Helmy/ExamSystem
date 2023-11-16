@@ -1,86 +1,93 @@
 ﻿using ExamSystem.Application.Services.Contract;
 using ExamSystem.Domain.Entities;
+using ExamSystem.Infrastructure.Specifications;
 using ExamSystem.Infrastructure.UnitOfWorks.Contract;
-using ExamSystem.Application.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using ExamSystem.Infrastructure.Specifications;
-using ExamSystem.Application.Helper;
 
 namespace ExamSystem.Application.Services
 {
     public class ExamService : GenericService<Exam>, IExamService
     {
-        private readonly ICertificateService _certificateService;
-        private readonly IQuestionService _questionService;
-
-        public ExamService(IUnitOfWork unitOfWork, ICertificateService certificateService, IQuestionService questionService) : base(unitOfWork)
+        public ExamService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            this._certificateService = certificateService;
-            this._questionService = questionService;
+
         }
 
-        public async Task<IReadOnlyList<Question>> CreateExamAsync(string userId, int certificateId)
+        public async Task<IReadOnlyList<Exam>> GetAllExamDetailsForUserAsync(string userId)
         {
-            var certificate = (await _certificateService.GetByIdAsync(certificateId))
-                ?? throw new ValidationException("Certificate Id is not exist!");
-
-            var exam = await base.CreateAsync(new Exam()
+            var examSpec = new BaseSpecification<Exam>(x => x.UserId == userId)
             {
-                UserId = userId,
-                CertificateId = certificateId,
-                ExamStartTime = DateTime.Now,
-                ExamEndTime = DateTime.Now.AddMinutes(certificate.TestDurationInMinutes),
-                CreatedAt = DateTime.Now,
-            });
+                Includes = new() { x => x.Certificate }
+            };
 
-            if (exam == null) throw new InvalidOperationException("create exam failed");
-
-            //get topic questionIds
-            List<int> questionsIds = new();
-
-            // get topic ids and questionCount
-            foreach (var certificateTopic in certificate.CertificateTopis)
-            {
-                List<int> topicQuestionsIds = new();
-
-                var questionCount = certificateTopic.QuestionCount;
-
-                var topicQuestions = (await _unitOfWork.Repository<Question>()
-                        .GetAllWithSpecAsync(new BaseSpecification<Question>(x => x.TopicId == certificateTopic.TopicId)));
-
-                AppHelpers.Shuffle<Question>((List<Question>)topicQuestions);
-
-
-                foreach (var question in topicQuestions)
-                {
-                    topicQuestionsIds.Add(question.Id);
-                    questionsIds.Add(question.Id);
-                }
-
-                //AppHelpers.Shuffle(topicQuestionsIds);
-
-                // create random questions from this topic in ExamQuestions
-                for (var i = 0; i < questionCount; i++)
-                {
-                    await _unitOfWork.Repository<ExamQuestion>().AddAsync(new ExamQuestion()
-                    {
-                        ExamId = exam.Id,
-                        QuestionId = topicQuestionsIds.ElementAt(i),
-                        CreatedAt = DateTime.Now,
-                    });
-                }
-            }
-
-            await _unitOfWork.CompleteAsync();
-
-            var questions = await _questionService.GetExamQuestions(exam.Id);
-
-            return questions;
+            return await _unitOfWork.Repository<Exam>().GetAllWithSpecAsync(examSpec);
         }
+
+        public async Task<Exam?> GetCurrentExamDetailsAsync(string userId)
+        {
+            var examSpec = new BaseSpecification<Exam>(x => x.UserId == userId && x.ExamEndTime > DateTime.Now)
+            {
+                Includes = new() { x => x.Certificate }
+            };
+
+            return await _unitOfWork.Repository<Exam>().GetByIdWithSpecAsync(examSpec);
+        }
+
+        public async Task<IReadOnlyList<ExamOverView>> GetExamOverviewAsync (string userId, int examId)
+        {
+            var examOverview = await _unitOfWork.ExamRepository.GetExamOverView(examId) 
+                ?? throw new KeyNotFoundException("Exam Id not Found");
+
+            // to check if this exam id belongs to the current user.
+            var currentExam = await _unitOfWork.ExamRepository
+                .GetByIdWithSpecAsync(new BaseSpecification<Exam>(x => x.Id == examId && x.UserId == userId)) 
+                ?? throw new UnauthorizedAccessException("you are trying to access protected resources");
+
+            return examOverview;
+        }
+
+        public async Task<Exam> UpdateCompleteExamAsync(string userId)
+        {
+            //var currentExam = await _unitOfWork.ExamRepository
+            //    .GetByIdWithSpecAsync(new BaseSpecification<Exam>(x => x.Id == examId && x.UserId == userId))
+            //    ?? throw new KeyNotFoundException("Exam Id not Found");
+
+            var currentExam = (await GetAllExamDetailsForUserAsync(userId)).LastOrDefault()
+                ?? throw new KeyNotFoundException("Exam Id not Found");
+
+            if(DateTime.Now >  currentExam.ExamEndTime.AddMinutes(10))
+                throw new InvalidOperationException("Exam ended you can't submit it after 10 minutes from ExamEndTime!");
+
+            // if exam ended you cant update it again
+            if (currentExam.ExamResult is not null)
+                throw new InvalidOperationException("Exam ended you cant update it again!");
+
+            currentExam.UpdatedAt = DateTime.Now;
+
+            if(currentExam.ExamEndTime > DateTime.Now)
+                currentExam.ExamCompletedTime = DateTime.Now;
+
+            var examResult = _unitOfWork.ExamRepository.GetTotalSuccessPercentage(currentExam.Id);
+            currentExam.ExamResult = (decimal) examResult;
+
+            var certificate = await _unitOfWork.Repository<Certificate>()
+                .GetByIdWithSpecAsync(new BaseSpecification<Certificate>(x => x.Id == currentExam.CertificateId));
+
+            var isPassed = examResult > certificate!.PassScore;
+            currentExam.IsPassed = isPassed;
+
+            _unitOfWork.ExamRepository.Update(currentExam);
+
+            var rowsAffected = await _unitOfWork.CompleteAsync();
+
+            if (rowsAffected == 0) throw new InvalidOperationException("update exam failed");
+
+            return currentExam;
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using ExamSystem.Domain.Entities;
+﻿using ExamSystem.Application.Dtos.ExamQuestion;
+using ExamSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace ExamSystem.Application.Services.Contract
 {
     public interface IExamQuestionService : IGenericService<ExamQuestion>
     {
-
+        Task<ExamQuestion> UpdateAnswerInExamQuestionAsync(UpdateAnswerIdInExamQuestionDto updateAnswerIdDto);
     }
 }

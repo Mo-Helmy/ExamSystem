@@ -113,15 +113,15 @@ namespace ExamSystem.Application.Services
             return existingQuestion;
         }
 
-        public async Task<IReadOnlyList<Question>> GetExamQuestions(int examId)
-        {
-            var questionIds = (await unitOfWork.Repository<ExamQuestion>()
-                .GetAllWithSpecAsync(new BaseSpecification<ExamQuestion>(x => x.ExamId == examId))).Select(x => x.QuestionId).ToList();
+        //public async Task<IReadOnlyList<Question>> GetExamQuestions(int examId)
+        //{
+        //    var questionIds = (await unitOfWork.Repository<ExamQuestion>()
+        //        .GetAllWithSpecAsync(new BaseSpecification<ExamQuestion>(x => x.ExamId == examId))).Select(x => x.QuestionId).ToList();
 
-            var examQuestionsSpec = new ExamQuestionSpecification(questionIds);
+        //    var examQuestionsSpec = new ExamQuestionSpecification(questionIds);
 
-            return await unitOfWork.Repository<Question>().GetAllWithSpecAsync(examQuestionsSpec);
-        }
+        //    return await unitOfWork.Repository<Question>().GetAllWithSpecAsync(examQuestionsSpec);
+        //}
 
     }
 }

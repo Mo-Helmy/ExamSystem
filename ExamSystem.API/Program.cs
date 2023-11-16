@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using System.Reflection;
+using ExamSystem.Application.Dtos.MailDtos;
 
 namespace ExamSystem.API
 {
@@ -33,6 +34,8 @@ namespace ExamSystem.API
             builder.Services
                 .AddApplicationDependencies()
                 .AddInfrastructureDependencies();
+
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(MailSettings.SectionKey));
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
