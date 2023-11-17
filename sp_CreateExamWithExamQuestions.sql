@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [dbo].[CreateExamAndQuestions]
+CREATE OR ALTER PROCEDURE [dbo].[sp_CreateExamAndQuestions]
     @UserId NVARCHAR(255),
     @CertificateId INT
 AS
@@ -57,7 +57,24 @@ BEGIN
         COMMIT TRANSACTION;
 
 		-- If Transaction successful get exam questions with answers
-		SELECT * FROM Exams WHERE Id = @ExamId;
+		--SELECT 
+		--E.Id,
+		--E.CertificateId,
+		--E.UserId,
+		--E.ExamStartTime,
+		--E.ExamEndTime,
+		--E.ExamCompletedTime,
+		--E.IsPassed,
+		--E.ExamScore,
+		--C.CertificateName,
+		--C.TestDurationInMinutes,
+		--C.PassScore,
+		--E.CreatedAt
+		--FROM Exams E
+		--INNER JOIN Certificates C ON C.Id = E.CertificateId
+		--WHERE E.Id = @ExamId;
+		SELECT * FROM Exams E WHERE E.Id = @ExamId
+		--SELECT * FROM Exams E INNER JOIN Certificates C ON E.CertificateId = C.Id WHERE E.Id = @ExamId
 		--SELECT * FROM dbo.QuestionsWithAnswersByExamId E WHERE E.ExamId = @ExamId; 
 
     END TRY

@@ -11,6 +11,6 @@ namespace ExamSystem.Application.Dtos.CertificateTopicDtos
         public int TopicId { get; set; }
         public string TopicName { get; set; }
         public int QuestionCount { get; set; }
-        public double TopicPercentage { get; set; }
+        public decimal TopicPercentage { get; set; }
     }
 }

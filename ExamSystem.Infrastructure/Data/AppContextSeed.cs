@@ -641,18 +641,18 @@ namespace ExamSystem.Infrastructure.Data
             {
                 var certificates = new List<Certificate>()
                 {
-                    new Certificate {CertificateName = "Programing Language Certificate", TestDurationInMinutes = 45, PassScore = 0.7m, CertificateTopis = new List<CertificateTopic> ()
+                    new Certificate {CertificateName = "Programing Language Certificate", TestDurationInMinutes = 10, PassScore = 70, CertificateTopis = new List<CertificateTopic> ()
                     {
-                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 3, TopicPercentage = 0.4m },
-                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 3, TopicPercentage = 0.2m },
-                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 3, TopicPercentage = 0.2m },
-                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 3, TopicPercentage = 0.2m },
+                        new CertificateTopic { CertificateId = 1, TopicId = 3, QuestionCount = 3, TopicPercentage = 40 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 4, QuestionCount = 3, TopicPercentage = 20 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 5, QuestionCount = 3, TopicPercentage = 20 },
+                        new CertificateTopic { CertificateId = 1, TopicId = 6, QuestionCount = 3, TopicPercentage = 20 },
                     } },
-                    new Certificate {CertificateName = "ٌٌReact.js Developer", TestDurationInMinutes = 45, PassScore = 0.7m, CertificateTopis = new List<CertificateTopic> ()
+                    new Certificate {CertificateName = "ٌٌReact.js Developer", TestDurationInMinutes = 10, PassScore = 70, CertificateTopis = new List<CertificateTopic> ()
                     {
-                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 6, TopicPercentage = 0.5m },
-                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 2, TopicPercentage = 0.25m },
-                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 2, TopicPercentage = 0.25m },
+                        new CertificateTopic { CertificateId = 2, TopicId = 7, QuestionCount = 6, TopicPercentage = 50 },
+                        new CertificateTopic { CertificateId = 2, TopicId = 8, QuestionCount = 2, TopicPercentage = 25 },
+                        new CertificateTopic { CertificateId = 2, TopicId = 9, QuestionCount = 2, TopicPercentage = 25 },
                     } },
                 };
                 await dbContext.Certificates.AddRangeAsync(certificates);

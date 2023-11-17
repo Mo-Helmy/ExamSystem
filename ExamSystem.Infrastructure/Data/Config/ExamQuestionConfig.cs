@@ -13,8 +13,9 @@ namespace ExamSystem.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Exam> builder)
         {
-            builder.Property(x => x.ExamScore).HasColumnType("decimal(18.2)");
+            builder.Property(x => x.ExamScore).HasColumnType("decimal(18,2)");
             //builder.Property(x => x.ExamScore).HasPrecision(18,2);
+
 
             builder.HasQueryFilter(x => x.IsDeleted == false);
         }
@@ -66,7 +67,7 @@ namespace ExamSystem.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<CertificateTopic> builder)
         {
-            builder.Property(x => x.TopicPercentage).HasColumnType("decimal(18.2)");
+            builder.Property(x => x.TopicPercentage).HasColumnType("decimal(18,2)");
 
             builder.HasQueryFilter(x => x.IsDeleted == false);
 
@@ -80,7 +81,7 @@ namespace ExamSystem.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Certificate> builder)
         {
-            builder.Property(x => x.PassScore).HasColumnType("decimal(18.2)");
+            builder.Property(x => x.PassScore).HasColumnType("decimal(18,2)");
 
             builder.HasQueryFilter(x => x.IsDeleted == false);
         }
@@ -100,6 +101,26 @@ namespace ExamSystem.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<Answer> builder)
         {
             builder.HasQueryFilter(x => x.IsDeleted == false);
+
+        }
+    }
+
+    internal class ExamQuestionsWithAnswersConfig : IEntityTypeConfiguration<ExamQuestionsWithAnswers>
+    {
+        public void Configure(EntityTypeBuilder<ExamQuestionsWithAnswers> builder)
+        {
+            builder.HasNoKey();
+            builder.ToView("v_ExamQuestionsWithAnswers");
+
+        }
+    }
+    
+    internal class ExamReviewConfig : IEntityTypeConfiguration<ExamReview>
+    {
+        public void Configure(EntityTypeBuilder<ExamReview> builder)
+        {
+            builder.HasNoKey();
+            builder.ToView("v_ExamReview");
 
         }
     }

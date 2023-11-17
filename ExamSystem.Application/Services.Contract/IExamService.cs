@@ -10,6 +10,17 @@ namespace ExamSystem.Application.Services.Contract
 {
     public interface IExamService : IGenericService<Exam>
     {
-        Task<IReadOnlyList<Question>> CreateExamAsync(string userId, int certificateId);
+        Task<Exam> CreateExamAsync(string userId, int certificateId);
+
+        Task<Exam> GetCurrentExamDetailsAsync(string userId);
+
+        Task<IReadOnlyList<ExamQuestionView>> GetCurrentExamQuestionsAsync(int examId);
+
+        Task<IReadOnlyList<Exam>> GetAllExamsForUserAsync(string userId);
+
+        Task<Exam> UpdateCompleteExamAsync(string userId);
+
+        Task<IReadOnlyList<ExamReview>> GetExamReviews(string userId, int examId);
+
     }
 }

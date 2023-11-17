@@ -13,11 +13,11 @@ namespace ExamSystem.Application.Dtos.CertificateDtos
         public string CertificateName { get; set; } = null!;
 
         [Required]
-        [Range(10, 240)]
+        [Range(5, 240)]
         public int TestDurationInMinutes { get; set; }
 
         [Required]
-        [Range(0.01, 1)]
+        [Range(1, 100)]
         public decimal PassScore { get; set; }
     }
 }

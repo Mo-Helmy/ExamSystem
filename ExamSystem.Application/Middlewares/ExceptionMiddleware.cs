@@ -1,9 +1,13 @@
 ﻿using ExamSystem.Application.Errors;
+using ExamSystem.Application.Responses;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ExamSystem.Application.Middlewares
 {
@@ -31,16 +35,58 @@ namespace ExamSystem.Application.Middlewares
                 // log error in console
                 logger.LogError(ex, ex.Message);
 
-                // return error response
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                var response = env.IsDevelopment()
-                    ? new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString())
-                    : new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+                var response = context.Response;
+                response.ContentType = "application/json";
+                var responseModel = new ApiErrorResponse(500);
+
+                //TODO:: cover all validation errors
+                switch (ex)
+                {
+                    case UnauthorizedAccessException e:
+                        // custom application error
+                        responseModel.ErrorMessage = e.Message;
+                        responseModel.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+
+                    case ValidationException e:
+                        // custom validation error
+                        responseModel.ErrorMessage = e.Message;
+                        responseModel.StatusCode = (int)HttpStatusCode.BadRequest;
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    case KeyNotFoundException e:
+                        // not found error
+                        responseModel.ErrorMessage = e.Message;
+                        responseModel.StatusCode = (int)HttpStatusCode.NotFound;
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    
+                    case InvalidOperationException e:
+                        // not found error
+                        responseModel.ErrorMessage = e.Message;
+                        responseModel.StatusCode = (int)HttpStatusCode.BadRequest;
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+
+                    case DbUpdateException e:
+                        // can't update error
+                        responseModel.ErrorMessage = e.Message;
+                        responseModel.StatusCode = (int)HttpStatusCode.BadRequest;
+                        responseModel = env.IsDevelopment()
+                            ? new ApiExceptionResponse((int)HttpStatusCode.BadRequest, ex.Message, ex.StackTrace?.ToString())
+                            : new ApiExceptionResponse((int)HttpStatusCode.BadRequest);
+                        break;
+                    default:
+                        responseModel = env.IsDevelopment()
+                            ? new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString())
+                            : new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+                        break;
+                }
 
                 var jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-                var jsonResponse = JsonSerializer.Serialize(response, jsonSerializerOptions);
+                var jsonResponse = JsonSerializer.Serialize(responseModel, jsonSerializerOptions);
 
                 await context.Response.WriteAsync(jsonResponse);
             }

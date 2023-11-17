@@ -54,8 +54,8 @@ namespace ExamSystem.Application.Dtos.CertificateTopicDtos.Validators
 
             RuleFor(x => x).MustAsync(async (x, _) =>
             {
-                return (await certificateTopicService.GetAllAsync(x.CertificateId)).Sum(x => x.TopicPercentage) + x.TopicPercentage <= 1;
-            }).WithMessage("The sum of TopicPercentage for all certificate topics must be equal 1");
+                return (await certificateTopicService.GetAllAsync(x.CertificateId)).Sum(x => x.TopicPercentage) + x.TopicPercentage <= 100;
+            }).WithMessage("The sum of TopicPercentage for all certificate topics must be equal 100");
 
         }
     }

@@ -24,29 +24,16 @@ namespace ExamSystem.Infrastructure.Data
 
         public DbSet<AppUser> Users { get; set; }
 
+        // views
+        public DbSet<ExamQuestionsWithAnswers> ExamQuestionsWithAnswers { get; set; }
+        public DbSet<ExamReview> ExamReviews { get; set; }
+
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<ExamQuestion>(builder =>
-            //{
-            //    builder.HasOne(x => x.Question)
-            //        .WithMany()
-            //        .HasForeignKey(x => x.QuestionId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-
-            //    builder.HasOne(x => x.Answer)
-            //        .WithMany()
-            //        .HasForeignKey(x => x.AnswerId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-
-            //    builder.HasOne(x => x.Exam)
-            //        .WithMany()
-            //        .HasForeignKey(x => x.ExamId)
-            //        .OnDelete(DeleteBehavior.NoAction);
-            //});
-
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);

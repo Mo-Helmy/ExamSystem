@@ -15,7 +15,8 @@ namespace ExamSystem.Application.MappingProfiles
         {
             CreateMap<CertificateTopic, CertificateTopicResponseDto>()
                 .ForMember(x => x.TopicId, config => config.MapFrom(x => x.Topic.Id))
-                .ForMember(x => x.TopicName, config => config.MapFrom(x => x.Topic.TopicName));
+                .ForMember(x => x.TopicName, config => config.MapFrom(x => x.Topic.TopicName))
+                .ForMember(x => x.TopicPercentage, config => config.MapFrom(x => x.TopicPercentage));
 
             CreateMap<AddCertificateTopicDto, CertificateTopic>();
         }

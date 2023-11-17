@@ -60,10 +60,10 @@ namespace ExamSystem.Application.Dtos.CertificateTopicDtos.Validators
 
                 var updatedTotalPercentage = currentTotalPercentage - currentTopicPercentage;
 
-                return updatedTotalPercentage + x.TopicPercentage <= 1;
+                return updatedTotalPercentage + x.TopicPercentage <= 100;
 
                 //return (await certificateTopicService.GetAllAsync(x.CertificateId)).Sum(x => x.TopicPercentage) + x.TopicPercentage <= 1;
-            }).WithMessage("The sum of TopicPercentage for all certificate topics must be not more than 1");
+            }).WithMessage("The sum of TopicPercentage for all certificate topics must be not more than 100");
 
         }
     }
