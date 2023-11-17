@@ -9,6 +9,16 @@ using System.Threading.Tasks;
 
 namespace ExamSystem.Infrastructure.Data.Config
 {
+    internal class ExamConfig : IEntityTypeConfiguration<Exam>
+    {
+        public void Configure(EntityTypeBuilder<Exam> builder)
+        {
+            builder.Property(x => x.ExamScore).HasColumnType("decimal(18.2)");
+            //builder.Property(x => x.ExamScore).HasPrecision(18,2);
+
+            builder.HasQueryFilter(x => x.IsDeleted == false);
+        }
+    }
     internal class ExamQuestionConfig : IEntityTypeConfiguration<ExamQuestion>
     {
         public void Configure(EntityTypeBuilder<ExamQuestion> builder)
@@ -22,6 +32,8 @@ namespace ExamSystem.Infrastructure.Data.Config
                 .WithOne()
                 .HasForeignKey<ExamQuestion>(x => x.AnswerId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasIndex(x => x.AnswerId).IsUnique(false);
 
             builder.HasOne(x => x.Exam)
                 .WithMany()
@@ -54,7 +66,7 @@ namespace ExamSystem.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<CertificateTopic> builder)
         {
-            //builder.HasKey(x => new {x.CertificateId, x.TopicId});
+            builder.Property(x => x.TopicPercentage).HasColumnType("decimal(18.2)");
 
             builder.HasQueryFilter(x => x.IsDeleted == false);
 
@@ -68,6 +80,8 @@ namespace ExamSystem.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Certificate> builder)
         {
+            builder.Property(x => x.PassScore).HasColumnType("decimal(18.2)");
+
             builder.HasQueryFilter(x => x.IsDeleted == false);
         }
     }

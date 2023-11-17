@@ -4,6 +4,7 @@ using ExamSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231117085649_change-FK_AnswerId_ExamQuestions-to-NonUnique")]
+    partial class changeFK_AnswerId_ExamQuestionstoNonUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,7 +119,7 @@ namespace ExamSystem.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("PassScore")
-                        .HasColumnType("decimal(18.2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TestDurationInMinutes")
                         .HasColumnType("int");
@@ -158,7 +161,7 @@ namespace ExamSystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TopicPercentage")
-                        .HasColumnType("decimal(18.2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -196,16 +199,10 @@ namespace ExamSystem.Infrastructure.Migrations
                     b.Property<DateTime>("ExamEndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("ExamScore")
-                        .HasColumnType("decimal(18.2)");
-
                     b.Property<DateTime>("ExamStartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPassed")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
