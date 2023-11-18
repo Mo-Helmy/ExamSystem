@@ -72,16 +72,17 @@ namespace ExamSystem.Application.Middlewares
 
                     case DbUpdateException e:
                         // can't update error
-                        responseModel.ErrorMessage = e.Message;
-                        responseModel.StatusCode = (int)HttpStatusCode.BadRequest;
                         responseModel = env.IsDevelopment()
-                            ? new ApiExceptionResponse((int)HttpStatusCode.BadRequest, ex.Message, ex.StackTrace?.ToString())
-                            : new ApiExceptionResponse((int)HttpStatusCode.BadRequest);
+                            ? new ApiExceptionResponse((int)HttpStatusCode.BadRequest, e.Message, e.StackTrace?.ToString())
+                            : new ApiExceptionResponse((int)HttpStatusCode.BadRequest, e.Message);
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
+
                     default:
                         responseModel = env.IsDevelopment()
                             ? new ApiExceptionResponse((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace?.ToString())
                             : new ApiExceptionResponse((int)HttpStatusCode.InternalServerError);
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
                 }
 
